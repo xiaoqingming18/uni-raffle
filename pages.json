@@ -27,6 +27,16 @@
 					"style": {
 						"navigationBarTitleText": "创建抽奖"
 					}
+				},{
+					"path": "start/start",
+					"style": {
+						"navigationBarTitleText": "开始抽奖"
+					}
+				}, {
+					"path": "start/list",
+					"style": {
+						"navigationBarTitleText": "获奖记录"
+					}
 				}
 			]
 		}

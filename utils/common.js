@@ -79,3 +79,15 @@ export function uploadImgFile(count = 1,callback) {
 		})
 	})
 }
+
+/**
+ * 显示弹窗
+*/
+export function showToast({title='',duration=1500,icon='none',mask=true} = {}) {
+	uni.showToast({
+		title:String(title),
+		icon,
+		duration,
+		mask
+	})
+}

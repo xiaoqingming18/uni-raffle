@@ -95,7 +95,7 @@
 				<uni-icons type="gear-filled" size="26"></uni-icons>
 				<view class="text">设置编辑</view>
 			</view>
-			<view class="item" hover-class="item-hover">
+			<view class="item" hover-class="item-hover" @click="routerTo('/pages_raffle/start/start')">
 				<uni-icons type="paperplane-filled" size="26"></uni-icons>
 				<view class="text">抽奖管理</view>
 			</view>
