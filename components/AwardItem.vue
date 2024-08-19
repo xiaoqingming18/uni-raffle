@@ -4,6 +4,7 @@
 			<image class="avatar" src="../static/images/logo.jpg" mode="aspectFill"></image>
 			<view class="username">匿名</view>
 		</view>
+		
 		<view class="body">
 			<view class="left">
 				<image class="pic" src="../static/images/logo.jpg" mode="aspectFill"></image>
@@ -14,17 +15,42 @@
 					<view class="line">奖品：iPhone手机</view>
 					<view class="line">轮次：第3轮中奖</view>
 					<view class="line">时间：2024-08-19 10:06</view>
-					<view class="line">
-						<button type="primary" size="mini">手动核销</button>
+					<view class="line">			
+						<button v-if="writeOff" type="primary" size="mini" @click="handleWriteOff">手动核销</button>
+						<button v-if="code" type="primary" size="mini" @click="handleGiveCode">兑换码</button>
 					</view>
 				</view>
 			</vire>
+		</view>
+		
+		<view class="confirm-btn" v-if="confirm">
+			<button type="primary">确认核销</button>
 		</view>
 	</view>
 </template>
 
 <script setup>
+	defineProps({
+		writeOff: {
+			type:Boolean,
+			default:false
+		},
+		code: {
+			type:Boolean,
+			default:false
+		},
+		confirm: {
+			type:Boolean,
+			default:false
+		}
+	})
 	
+	const handleWriteOff = () => {
+		console.log('核销')
+	}
+	const handleGiveCode = () => {
+		console.log('兑换码')
+	}
 </script>
 
 <style lang="scss" scoped>
@@ -91,6 +117,11 @@
 				}
 			}
 		}
+	}
+	
+	.confirm-btn {
+		padding: 20rpx;
+		padding-top: 60rpx;
 	}
 }
 </style>

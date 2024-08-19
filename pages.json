@@ -32,10 +32,20 @@
 					"style": {
 						"navigationBarTitleText": "开始抽奖"
 					}
-				}, {
+				},{
 					"path": "start/list",
 					"style": {
 						"navigationBarTitleText": "获奖记录"
+					}
+				},{
+					"path": "start/confirm",
+					"style": {
+						"navigationBarTitleText": "扫码核销"
+					}
+				},{
+					"path": "logs/logs",
+					"style": {
+						"navigationBarTitleText": "中奖记录"
 					}
 				}
 			]

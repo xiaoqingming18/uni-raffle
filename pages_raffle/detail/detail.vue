@@ -83,7 +83,7 @@
 	<!-- 侧边按钮组 -->
 	<view class="menu-bar">
 		<view class="group" :style="{transform: menuState?'scale(1)':'scale(0)',opacity: menuState?1:0}">
-			<view class="item" hover-class="item-hover">
+			<view class="item" hover-class="item-hover" @click="routerTo('/pages_raffle/logs/logs')">
 				<uni-icons type="gift-filled" size="26"></uni-icons>
 				<view class="text">中奖记录</view>
 			</view>
@@ -91,7 +91,7 @@
 				<uni-icons type="undo-filled" size="26"></uni-icons>
 				<view class="text">分享抽奖</view>
 			</view>
-			<view class="item" hover-class="item-hover">
+			<view class="item" hover-class="item-hover" @click="routerTo('/pages_raffle/edit/edit')">
 				<uni-icons type="gear-filled" size="26"></uni-icons>
 				<view class="text">设置编辑</view>
 			</view>
