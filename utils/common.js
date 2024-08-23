@@ -26,7 +26,7 @@ export const routerTo = (url,type='navigate') => {
 
 /**
  * 返回上级页面
- * @param {number} 返回的层级树木
+ * @param {number} 返回的层级数目
 */
 export const toBackPage = (delta = 1) => {
 	uni.navigateBack({
@@ -90,4 +90,26 @@ export function showToast({title='',duration=1500,icon='none',mask=true} = {}) {
 		duration,
 		mask
 	})
+}
+
+/**
+ * 根据抽奖活动状态码，转换为文字（未开始 进行中 已结束）
+ * @param {number} statusCode 抽奖活动的状态码
+ * @return {string} 状态码对应的状态文字 
+*/
+export function statusCode2text(statusCode) {
+	switch(statusCode) {
+		case 1: {
+			return '未开始'
+			break
+		}
+		case 2 : {
+			return '进行中'
+			break
+		}
+		case 3: {
+			return '已结束'
+			break
+		}
+	}
 }

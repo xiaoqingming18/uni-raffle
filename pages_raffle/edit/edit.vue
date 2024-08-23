@@ -37,7 +37,7 @@
 				</view>
 			</view>
 			<!-- 增加一个奖项 -->
-			<view class="add-option">
+			<view class="add-option" v-show="awardList.length < 9">
 				<view class="btn" @click="addAward">+ 增加奖项</view>
 			</view>
 		</view>
@@ -67,7 +67,7 @@
 				<view class="row">
 					<view class="name">是否能重复中奖</view>
 					<view class="control">
-						<switch :checked="isPepeat" @change="handleSwitchChange" color="#ee4626" style="transform: scale(0.8);transform-origin: right;"></switch>
+						<switch :checked="isRepeat" @change="handleSwitchChange" color="#ee4626" style="transform: scale(0.8);transform-origin: right;"></switch>
 					</view>
 				</view>
 			</view>
@@ -82,9 +82,10 @@
 <script setup>
 	import { ref } from 'vue';
 	import {uuid,getFileExtension} from '@/utils/tools.js'
-	import { uploadImgFile,showToast } from '@/utils/common';
+	import { uploadImgFile,showToast,toBackPage } from '@/utils/common';
 	import dayjs from 'dayjs';
 	
+	const db = uniCloud.database()
 	const ruleContent = ref(`1.点击参与报名参加活动；\n2.参与后无需额外操作，等待主办方发起抽奖；\n3.抽奖成功后会将抽奖结果返回，可在右上角点击查者；\n4.将获奖记录给现场工作人员核销后，领取对应的奖品。`)
 	const awardList = ref([
 		{
@@ -107,7 +108,7 @@
 		start: dayjs().format('YYYY-MM-DD HH:mm:ss'),
 		end: dayjs().add(7,'d').endOf('day')
 	})
-	const isPepeat = ref(false)
+	const isRepeat = ref(false)
 	
 	// 上传奖项图片
 	const addPic = (index) => {
@@ -140,10 +141,10 @@
 	}
 	// 是否重复
 	const handleSwitchChange = (e) => {
-		isPepeat.value = e.detail.value
+		isRepeat.value = e.detail.value
 	}
 	// 提交奖项
-	const onSubmit = () => {
+	const onSubmit = async () => {
 		if(!(awardList.value.length && awardList.value.every(item => item.name && item.description))) {
 			showToast({title:'奖品名称和描述必填',duration:2500})
 		}
@@ -152,10 +153,28 @@
 		const formData = {
 			awardList: awardList.value,
 			ruleContent: ruleContent.value,
-			isPepeat: isPepeat.value,
+			isRepeat: isRepeat.value,
 			endTime: endTime.value
 		}
-		console.log(formData)
+		
+		// 提交数据到数据库
+		uni.showLoading({
+			title: "提交中",
+			mask:true
+		})
+		try {
+			const {result:{errCode}} = await db.collection('raffle-data').add(formData)
+			if(errCode === 0) {
+				showToast({title:"创建成功"})
+				setTimeout(() => {
+					toBackPage()
+				},1000)
+			} else {
+				showToast({title:"创建失败，请重新操作",icon:"error"})
+			}
+		} catch(err) {
+			showToast({title:err})
+		}
 	}
 </script>
 
