@@ -5,7 +5,7 @@
 				<uni-load-more status="loading" />
 			</template>
 			<uni-list border v-if="dataList.length">
-				<uni-list-item v-for="item in dataList" :key="item._id" :title="item.title" :note="`创建于${dayjs(item.create_date).format('YYYY-MM-DD HH:mm')}\n已参与${item.join_count}人`" :rightText="statusCode2text(item.active_state)" showArrow clickable @click="routerTo('/pages_raffle/detail/detail')"></uni-list-item>
+				<uni-list-item v-for="item in dataList" :key="item._id" :title="`${item.nickname} - 创建的投票`" :note="`创建于${dayjs(item.create_date).format('YYYY-MM-DD HH:mm')}\n已参与${item.join_count}人`" :rightText="statusCode2text(item.active_state)" showArrow clickable @click="routerTo('/pages_raffle/detail/detail')"></uni-list-item>
 			</uni-list>
 		</z-paging>
 		
@@ -21,7 +21,7 @@
 
 <script setup>
 	import { ref } from 'vue';
-	import {routerTo,statusCode2text} from '@/utils/common.js'
+	import {routerTo,showToast,statusCode2text} from '@/utils/common.js'
 	import dayjs from 'dayjs'
 	
 	const db = uniCloud.database()
@@ -33,9 +33,22 @@
 		routerTo('/pages_raffle/edit/edit')
 	}
 	const queryList = async (pageNo, pageSize) => {
-		const res = await db.collection("raffle-data").orderBy('create_date desc').get()
-		console.log(res.result)
-		pagingRef.value.complete(res.result.data)
+		const raffleTemp = db.collection("raffle-data").orderBy('create_date desc').getTemp()
+		const userTemp = db.collection('uni-id-users').field('_id,nickname').getTemp()
+		
+		// 连表查询（user表和 raffle表）
+		try {
+			const {result:{data,errCode}} = await db.collection(raffleTemp,userTemp)
+			.field("active_state,create_date,join_count,arrayElemAt(user_id.nickname,0) as nickname,_id").get()
+			console.log(data)
+			if(errCode ===0) {
+				pagingRef.value.complete(data)
+			} else {
+				pagingRef.value.complete(false)
+			}
+		} catch(err) {
+			showToast(err)
+		}
 	}
 </script>
 

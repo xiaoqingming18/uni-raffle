@@ -1,5 +1,5 @@
-import { uuid,getFileExtension } from "./tools.js"
-import dayjs from 'dayjs'
+import { uuid,getFileExtension } from "./tools.js";
+import dayjs from 'dayjs';
 
 /**
  * 路由跳转方法
@@ -51,10 +51,10 @@ export function uploadImgFile(count = 1,callback) {
 					let index = 0
 					let fileExtensionName
 					// #ifdef MP
-					fileExtensionName getFileExtension(filePath)
+					fileExtensionName =  getFileExtension(filePath);
 					// #endif
 					// #ifndef MP
-					fileExtensionName = res.tempFiles[0].name	
+					fileExtensionName = res.tempFiles[0].name;
 					// #endif
 					// 上传到 uniClous
 					uni.showLoading({
@@ -107,16 +107,16 @@ export function showToast({title='',duration=1500,icon='none',mask=true} = {}) {
 export function statusCode2text(statusCode) {
 	switch(statusCode) {
 		case 1: {
-			return '未开始'
-			break
+			return '未开始';
+			break;
 		}
 		case 2 : {
-			return '进行中'
-			break
+			return '进行中';
+			break;
 		}
 		case 3: {
-			return '已结束'
-			break
+			return '已结束';
+			break;
 		}
 	}
 }
