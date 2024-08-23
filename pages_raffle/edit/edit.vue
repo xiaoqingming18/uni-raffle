@@ -57,7 +57,7 @@
 					<view class="control">
 						<uni-datetime-picker
 						    v-model="endTime"
-							type="datetime",
+							type="datetime"
 							:start="defaultTime.start"
 							:end="defaultTime.end"
 						/>

@@ -49,6 +49,13 @@ export function uploadImgFile(count = 1,callback) {
 				if(res.tempFilePaths.length > 0) {
 					let filePath = res.tempFilePaths[0]
 					let index = 0
+					let fileExtensionName
+					// #ifdef MP
+					fileExtensionName getFileExtension(filePath)
+					// #endif
+					// #ifndef MP
+					fileExtensionName = res.tempFiles[0].name	
+					// #endif
 					// 上传到 uniClous
 					uni.showLoading({
 						title: "上传中",
@@ -57,7 +64,7 @@ export function uploadImgFile(count = 1,callback) {
 					uniCloud.uploadFile({
 						filePath: filePath,
 						cloudPathAsRealPath: true,
-						cloudPath: `raffle/${currentDate}/${uuid()}_${index}.${getFileExtension(filePath)}`,
+						cloudPath: `raffle/${currentDate}/${uuid()}_${index}.${fileExtensionName}`,
 						success: (res) => {
 							resolve(res.fileID)
 						},
