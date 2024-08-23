@@ -5,7 +5,7 @@
 				<uni-load-more status="loading" />
 			</template>
 			<uni-list border v-if="dataList.length">
-				<uni-list-item v-for="item in dataList" :key="item._id" :title="`${item.nickname} - 创建的投票`" :note="`创建于${dayjs(item.create_date).format('YYYY-MM-DD HH:mm')}\n已参与${item.join_count}人`" :rightText="statusCode2text(item.active_state)" showArrow clickable @click="routerTo('/pages_raffle/detail/detail')"></uni-list-item>
+				<uni-list-item v-for="item in dataList" :key="item._id" :title="`${item.nickname} - 创建的投票`" :note="`创建于${dayjs(item.create_date).format('YYYY-MM-DD HH:mm')}\n已参与${item.join_count}人`" :rightText="statusCode2text(item.active_state)" showArrow clickable @click="routerTo(`/pages_raffle/detail/detail?id=${item._id}`)"></uni-list-item>
 			</uni-list>
 		</z-paging>
 		

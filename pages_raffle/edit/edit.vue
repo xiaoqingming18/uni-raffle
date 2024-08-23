@@ -85,6 +85,7 @@
 	import { uploadImgFile,showToast,toBackPage } from '@/utils/common';
 	import dayjs from 'dayjs';
 	
+	let raffleId
 	const db = uniCloud.database()
 	const ruleContent = ref(`1.点击参与报名参加活动；\n2.参与后无需额外操作，等待主办方发起抽奖；\n3.抽奖成功后会将抽奖结果返回，可在右上角点击查者；\n4.将获奖记录给现场工作人员核销后，领取对应的奖品。`)
 	const awardList = ref([

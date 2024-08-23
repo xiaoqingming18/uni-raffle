@@ -41,13 +41,13 @@
 			<view class="item">
 				<view class="title"> —— 奖品奖项 ——</view>
 				<view class="content">
-					<view class="row" v-for="item in 3">
+					<view class="row" v-for="item in raffleDetail.awardList">
 						<view class="pic" @click="handleAwardPicClick">
-							<image src="../../static/images/logo.jpg" mode="aspectFill"></image>
+							<image :src="itempicUrl || '../../static/images/prizePic.webp'" mode="aspectFill"></image>
 						</view>
 						<view class="text">
-							<view class="name">一等奖（10名）</view>
-							<view class="description">iPhone 15</view>
+							<view class="name">{{item.name}}（{{item.count}}名）</view>
+							<view class="description">{{item.description}}</view>
 						</view>
 					</view>
 				</view>
@@ -57,12 +57,7 @@
 				<view class="title"> —— 规则说明 ——</view>
 				<view class="content">
 					<text>
-						{{`
-						1.点击参与报名参加活动；\n
-						2.参与后无需额外操作，等待主办方发起抽奖；\n
-						3.抽奖成功后会将抽奖结果返回，可在右上角点击查者；\n
-						4.将获奖记录给现场工作人员核销后，领取对应的奖品。
-						`}}
+						{{raffleDetail.ruleContent}}
 					</text>
 				</view>
 			</view>
@@ -134,14 +129,22 @@
 
 <script setup>
 	import { ref } from "vue";
+	import {onLoad} from '@dcloudio/uni-app'
 	import {getStatusBarHeight,getTitleBarHeight} from "@/utils/system.js"
 	import {toBackPage,routerTo} from '@/utils/common.js'
 	
+	let raffleId
+	const db = uniCloud.database()
 	const routerPageLength = ref(getCurrentPages().length)
 	const menuState = ref(true)
 	const popupRef = ref(null)
 	const resultPopupRef = ref(null)
+	const raffleDetail = ref(null)
 	
+	onLoad((e) => {
+		raffleId = e.id
+		getRaffleDetail()
+	})
 	// 点击奖品图片预览大图
 	const handleAwardPicClick = () => {
 		uni.previewImage({
@@ -160,6 +163,11 @@
 	const handleResultClose = () => {
 		resultPopupRef.value.close()
 	}
+	const getRaffleDetail = async () => {
+		const {result:{data:[dataObj]},errCode} = await db.collection('raffle-data').where(`_id == "${raffleId}"`).get()
+		raffleDetail.value = dataObj
+		console.log(raffleDetail.value)
+	}	
 </script>
 
 <style lang="scss" scoped>
